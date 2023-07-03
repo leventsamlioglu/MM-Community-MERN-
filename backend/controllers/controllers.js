@@ -109,9 +109,7 @@ const signupPost = async (req, res) => {
 	let existedUser = await User.findOne({ email: req.body.email });
 
 	if (existedUser) {
-		res.render("login", {
-			error: "user is exist",
-		});
+		res.send("user is exist");
 	} else {
 		let user = new User(req.body);
 		user
@@ -119,10 +117,10 @@ const signupPost = async (req, res) => {
 			.then(() => {
 				const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
 				res.cookie("userToken", userToken, { httpOnly: true });
-				res.redirect("/");
+				res.send("signUpPost");
 			})
 			.catch((err) => {
-				res.render("signup", { err: err.errors });
+				res.send(err);
 			});
 	}
 };
@@ -173,7 +171,7 @@ const getUpdatePost = (req, res) => {
 };
 
 const getProfilePage = (req, res) => {
-	const err = '';
+	const err = "";
 	const message = "";
 	User.findById(req.params.id)
 		.then((user1) => res.render("profile", { user1: user1, err, message }))
@@ -188,26 +186,26 @@ const changePassword = async (req, res) => {
 		const user1 = "";
 		const message = "Please enter a password!";
 		res.render("profile", { message, user1, err });
-	}else {
-	if (req.body.password == req.body.confirmPassword) {
-		const cryptePassword = await bcrypt.hashSync(req.body.password, 12);
-
-		const err = "";
-		const successMessage = "Password is changed!";
-
-		await User.findByIdAndUpdate(req.params.id, { password: cryptePassword });
-		User.findById(req.params.id)
-			.then((user1) =>
-				res.render("profile", { message: successMessage, err, user1: user1 })
-			)
-			.catch((err) => res.render("profile", { err: err.errors }));
 	} else {
-		const err = "";
-		const user1 = "";
-		const message = "password is not same";
-		res.render("profile", { message, user1, err });
+		if (req.body.password == req.body.confirmPassword) {
+			const cryptPassword = await bcrypt.hashSync(req.body.password, 12);
+
+			const err = "";
+			const successMessage = "Password is changed!";
+
+			await User.findByIdAndUpdate(req.params.id, { password: cryptPassword });
+			User.findById(req.params.id)
+				.then((user1) =>
+					res.render("profile", { message: successMessage, err, user1: user1 })
+				)
+				.catch((err) => res.render("profile", { err: err.errors }));
+		} else {
+			const err = "";
+			const user1 = "";
+			const message = "password is not same";
+			res.render("profile", { message, user1, err });
+		}
 	}
-}
 };
 
 const settingsPage = (req, res) => {
