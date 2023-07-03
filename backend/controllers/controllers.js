@@ -134,9 +134,9 @@ const loginPost = async (req, res) => {
 		const user = await User.login(email, password);
 		const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
 		res.cookie("userToken", userToken, { httpOnly: true });
-		res.redirect("/");
+		res.send("loginPost");
 	} catch (error) {
-		res.render("login", { error });
+		res.send(error.message);
 	}
 };
 
