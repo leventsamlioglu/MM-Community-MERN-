@@ -1,6 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useRef, useState } from "react";
 
-const Login = ({ error }) => {
+const Login = ({ err }) => {
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error,setError] = useState('')
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	const navigate = useNavigate();
+
+	const submitHandler = () => {
+		axios
+			.post("http://localhost:4000/login", { email, password })
+			.then((res) => {
+				res.data === "loginPost" ? navigate("/") : setError(res.data);
+			})
+			.catch((err) => console.log(err));
+	};
+
 	return (
 		<div className="container-fluid ps-md-0">
 			<div className="row g-0">
@@ -13,7 +31,12 @@ const Login = ({ error }) => {
 									<h3 className="login-heading mb-4">Welcome back!</h3>
 
 									{/* <!-- Sign In Form --> */}
-									<form action="/login" method="post">
+									<form
+										onSubmit={(e) => {
+											e.preventDefault();
+											submitHandler();
+										}}
+									>
 										<div className="form-floating mb-3">
 											<input
 												type="email"
@@ -22,15 +45,16 @@ const Login = ({ error }) => {
 												name="email"
 												placeholder="name@example.com"
 												autoComplete="email"
+												ref={emailRef}
 											/>
-											{error && error.message === "User could not be found" && (
+											{error && error === "User could not be found" && (
 												<div
 													id="emailError"
 													className="alert alert-danger"
 													data-bs-dismiss="alert"
 													role="alert"
 												>
-													{error.message}
+													{error}
 												</div>
 											)}
 
@@ -44,9 +68,10 @@ const Login = ({ error }) => {
 												name="password"
 												placeholder="Password"
 												autoComplete="password"
+												ref={passwordRef}
 											/>
 											<label htmlFor="password">Password</label>
-											{error && error.message === "Incorrect password" && (
+											{error && error === "Incorrect password" && (
 												<>
 													<div
 														id="passwordError"
@@ -54,7 +79,7 @@ const Login = ({ error }) => {
 														data-bs-dismiss="alert"
 														role="alert"
 													>
-														{error.message}
+														{error}
 													</div>
 												</>
 											)}
@@ -81,6 +106,10 @@ const Login = ({ error }) => {
 											<button
 												className="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
 												type="submit"
+												onClick={() => {
+													setEmail(emailRef.current.value);
+													setPassword(passwordRef.current.value);
+												}}
 											>
 												Sign in
 											</button>
