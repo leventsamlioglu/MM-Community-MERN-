@@ -20,9 +20,9 @@ const HomePage = () => {
 			<div className="container text-center">
 				<button
 					type="button"
-					className="btn btn-warning btn-lg mb-4 mt-4 fs-2 btn-anime"
-					data-bs-toggle="modal"
-					data-bs-target="#exampleModal"
+					className="btn btn-warning btn-lg mb-4 mt-5 fs-2 btn-anime"
+					// data-bs-toggle="modal"
+					// data-bs-target="#exampleModal"
 					style={{ width: "50%", color: "black" }}
 					onClick={handleShow}
 				>
@@ -86,7 +86,7 @@ const HomePage = () => {
 				</div>
 			</div>
 
-			{showModal && <PostModal />}
+			{showModal && <PostModal onClick={handleClose} show={showModal}/>}
 		</>
 	);
 };

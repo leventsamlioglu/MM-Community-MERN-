@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ username }) => {
 	return (
-		<nav className="navbar navbar-expand-lg navbar-dark justify-content-between mb-4 p-4 w-100">
+		<nav className="navbar navbar-expand-lg navbar-dark justify-content-between  p-4 w-100">
 			<Link to="/" className="navbar-brand" style={{ fontSize: "2em" }}>
 				Matrix Master Community
 			</Link>
