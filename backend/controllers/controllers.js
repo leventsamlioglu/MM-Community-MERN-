@@ -25,11 +25,11 @@ const postCreate = async (req, res) => {
 	newPost
 		.save()
 		.then(() => {
-			res.redirect("/");
+			res.send("redirect homePage");
 		})
 		.catch((err) => {
 			console.log(err.errors);
-			res.redirect("/");
+			res.send("redirect homePage");
 		});
 };
 
@@ -40,10 +40,10 @@ const postDetail = (req, res) => {
 				.sort({ createdAt: -1 })
 				.then((result2) => {
 					const err = {};
-					res.render("details", { post: result1, comments: result2, err: err });
+					res.send( { post: result1, comments: result2, err: err });
 				})
 				.catch((err) => {
-					res.render("details", { err: err.errors });
+					res.send( { err: err.errors });
 				});
 		})
 		.catch((err) => console.log(err));
@@ -51,7 +51,7 @@ const postDetail = (req, res) => {
 
 const postDelete = (req, res) => {
 	Post.findByIdAndDelete(req.params.id)
-		.then(() => res.redirect("/"))
+		.then(() => res.send("redirect homePage"))
 		.catch((err) => {
 			console.log(err);
 		});
@@ -72,14 +72,14 @@ const commentCreate = (req, res) => {
 				.sort({ createdAt: -1 })
 				.then((result2) => {
 					const err1 = {};
-					res.render("details", {
+					res.send( {
 						post: result1,
 						comments: result2,
 						err: err1,
 					});
 				})
 				.catch((err) => {
-					res.render("details", { err: err.errors });
+					res.send( { err: err.errors });
 				});
 		})
 		.catch((err) => {
@@ -89,7 +89,7 @@ const commentCreate = (req, res) => {
 
 const commentDelete = (req, res) => {
 	Comment.findByIdAndDelete(req.params.id)
-		.then(() => res.redirect("/"))
+		.then(() => res.send("redirect homePage"))
 		.catch((err) => {
 			console.log(err);
 		});
@@ -97,11 +97,11 @@ const commentDelete = (req, res) => {
 // Login & Sign Up
 
 const signupGet = (req, res) => {
-	res.render("signup", { err: null });
+	res.send({ err: null });
 };
 
 const loginGet = (req, res) => {
-	res.render("login", { error: null });
+	res.send( {error: null });
 };
 
 const signupPost = async (req, res) => {
@@ -109,7 +109,7 @@ const signupPost = async (req, res) => {
 	let existedUser = await User.findOne({ email: req.body.email });
 
 	if (existedUser) {
-		res.render("login", {
+		res.send({
 			error: "user is exist",
 		});
 	} else {
@@ -119,10 +119,10 @@ const signupPost = async (req, res) => {
 			.then(() => {
 				const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
 				res.cookie("userToken", userToken, { httpOnly: true });
-				res.redirect("/");
+				res.send("redirect homePage");
 			})
 			.catch((err) => {
-				res.render("signup", { err: err.errors });
+				res.send({ err: err.errors });
 			});
 	}
 };
@@ -142,13 +142,13 @@ const loginPost = async (req, res) => {
 
 const logoutGet = (req, res) => {
 	res.clearCookie("userToken");
-	res.redirect("/");
+	res.send("redirect homePage");
 };
 
 const getEditModelPage = (req, res) => {
 	Post.findById(req.params.id)
 		.then((result) => {
-			res.render("editModal", { post: result });
+			res.send( { post: result });
 		})
 		.catch((err) => console.log(err));
 };
@@ -160,7 +160,7 @@ const getUpdatePost = (req, res) => {
 				.sort({ createdAt: -1 })
 				.then((result2) => {
 					const err1 = {};
-					res.render("editedDetails", {
+					res.send( {
 						post: result,
 						comments: result2,
 						err: err1,
@@ -168,7 +168,7 @@ const getUpdatePost = (req, res) => {
 				});
 		})
 		.catch((err) => {
-			res.render("editedDetails", { err: err.errors });
+			res.send({ err: err.errors });
 		});
 };
 
@@ -176,9 +176,9 @@ const getProfilePage = (req, res) => {
 	const err = '';
 	const message = "";
 	User.findById(req.params.id)
-		.then((user1) => res.render("profile", { user1: user1, err, message }))
+		.then((user1) => res.send( { user1: user1, err, message }))
 		.catch((err) => {
-			res.render("profile", { err: err.errors });
+			res.send( { err: err.errors });
 		});
 };
 
@@ -187,7 +187,7 @@ const changePassword = async (req, res) => {
 		const err = "";
 		const user1 = "";
 		const message = "Please enter a password!";
-		res.render("profile", { message, user1, err });
+		res.send( { message, user1, err });
 	}else {
 	if (req.body.password == req.body.confirmPassword) {
 		const cryptePassword = await bcrypt.hashSync(req.body.password, 12);
@@ -198,20 +198,20 @@ const changePassword = async (req, res) => {
 		await User.findByIdAndUpdate(req.params.id, { password: cryptePassword });
 		User.findById(req.params.id)
 			.then((user1) =>
-				res.render("profile", { message: successMessage, err, user1: user1 })
+				res.send( { message: successMessage, err, user1: user1 })
 			)
-			.catch((err) => res.render("profile", { err: err.errors }));
+			.catch((err) => res.send( { err: err.errors }));
 	} else {
 		const err = "";
 		const user1 = "";
 		const message = "password is not same";
-		res.render("profile", { message, user1, err });
+		res.send( { message, user1, err });
 	}
 }
 };
 
 const settingsPage = (req, res) => {
-	res.render("settings");
+	res.send(' setting page');
 };
 
 module.exports = {
