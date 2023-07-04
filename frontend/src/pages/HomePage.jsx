@@ -86,7 +86,7 @@ const HomePage = () => {
 				</div>
 			</div>
 
-			{showModal && <PostModal onClick={handleClose} show={showModal}/>}
+			{showModal && <PostModal click={handleClose} show={showModal}/>}
 		</>
 	);
 };

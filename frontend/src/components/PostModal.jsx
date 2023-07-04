@@ -1,10 +1,10 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-const PostModal = (props) => {
+const PostModal = ({ click, show }) => {
 	return (
 		<Modal
-			{...props}
+			show={show}
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
@@ -15,7 +15,7 @@ const PostModal = (props) => {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<form action="/sendPost/<%=userId%>" method="post">
+				<form>
 					<div className="form-group">
 						<label htmlFor="title">Title</label>
 						<input
@@ -39,7 +39,7 @@ const PostModal = (props) => {
 				</form>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button onClick={props.onClick} className="btn btn-secondary">
+				<Button onClick={click} className="btn btn-secondary">
 					Close
 				</Button>
 				<Button type="submit" className="btn btn-primary">
