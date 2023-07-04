@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
-const Navbar = ({ username }) => {
+const Navbar = () => {
+	let username = localStorage.getItem("userName")
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark justify-content-between  p-4 w-100">
 			<Link to="/" className="navbar-brand" style={{ fontSize: "2em" }}>
