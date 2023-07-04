@@ -105,26 +105,24 @@ const loginGet = (req, res) => {
 };
 
 const signupPost = async (req, res) => {
-	// Check if this user is already in the DB.
-	let existedUser = await User.findOne({ email: req.body.email });
+    // Check if this user is already in the DB.
+    let existedUser = await User.findOne({ email: req.body.email });
 
-	if (existedUser) {
-		res.send({
-			error: "user is exist",
-		});
-	} else {
-		let user = new User(req.body);
-		user
-			.save()
-			.then(() => {
-				const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
-				res.cookie("userToken", userToken, { httpOnly: true });
-				res.send("redirect homePage");
-			})
-			.catch((err) => {
-				res.send({ err: err.errors });
-			});
-	}
+    if (existedUser) {
+        res.send("user is exist");
+    } else {
+        let user = new User(req.body);
+        user
+            .save()
+            .then(() => {
+                const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
+                res.cookie("userToken", userToken, { httpOnly: true });
+                res.send("signUpPost");
+            })
+            .catch((err) => {
+                res.send(err);
+            });
+    }
 };
 
 const loginPost = async (req, res) => {
@@ -190,12 +188,12 @@ const changePassword = async (req, res) => {
 		res.send( { message, user1, err });
 	}else {
 	if (req.body.password == req.body.confirmPassword) {
-		const cryptePassword = await bcrypt.hashSync(req.body.password, 12);
+		const cryptPassword = await bcrypt.hashSync(req.body.password, 12);
 
 		const err = "";
 		const successMessage = "Password is changed!";
 
-		await User.findByIdAndUpdate(req.params.id, { password: cryptePassword });
+		await User.findByIdAndUpdate(req.params.id, { password: cryptPassword });
 		User.findById(req.params.id)
 			.then((user1) =>
 				res.send( { message: successMessage, err, user1: user1 })

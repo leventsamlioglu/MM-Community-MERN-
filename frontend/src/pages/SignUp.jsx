@@ -1,6 +1,45 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import axios from "axios";
 
-const SignUp = ({ err }) => {
+const SignUp = () => {
+	const [userName, setUserName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
+	const userNameRef = useRef();
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	const navigate = useNavigate();
+
+	const submitHandler = () => {
+		axios
+			.post("http://localhost:4000/signup", {
+				email,
+				password,
+				username: userName,
+			})
+			.then((res) => {
+				let err = "";
+
+				if (res.data.errors) {
+					if (res.data.errors.email) {
+						err = res.data.errors.email.message;
+					} else if (res.data.errors.username) {
+						err = res.data.errors.username.message;
+					} else if (res.data.errors.password) {
+						err = res.data.errors.password.message;
+					}
+				} else setError("");
+				res.data === "signUpPost"
+					? navigate("/login")
+					: res.data === "user is exist"
+					? setError(res.data)
+					: setError(err);
+			})
+			.catch((err) => console.log(err));
+	};
+
 	return (
 		<div className="container-fluid ps-md-0">
 			<div className="row g-0">
@@ -13,7 +52,12 @@ const SignUp = ({ err }) => {
 									<h5 className="card-title text-center mb-5 fw-light fs-5">
 										Register
 									</h5>
-									<form action="/signup" method="post">
+									<form
+										onSubmit={(e) => {
+											e.preventDefault();
+											submitHandler();
+										}}
+									>
 										<div className="form-floating mb-3">
 											<input
 												type="text"
@@ -23,17 +67,18 @@ const SignUp = ({ err }) => {
 												placeholder="Username"
 												autoFocus
 												autoComplete="username"
+												ref={userNameRef}
 											/>
 											<label htmlFor="username">Username</label>
 
-											{err && (
+											{error === "Please enter a username!" && (
 												<div
 													id="usernameError"
 													className="alert alert-danger"
 													data-bs-dismiss="alert"
 													role="alert"
 												>
-													<i>{err.username}</i>
+													<i>{error}</i>
 												</div>
 											)}
 										</div>
@@ -46,16 +91,18 @@ const SignUp = ({ err }) => {
 												name="email"
 												placeholder="name@example.com"
 												autoComplete="email"
+												ref={emailRef}
 											/>
 											<label htmlFor="floatingInputEmail">Email address</label>
-											{err && (
+											{(error === "user is exist" ||
+												error === "Please enter an email!") && (
 												<div
 													id="emailError"
 													className="alert alert-danger"
 													data-bs-dismiss="alert"
 													role="alert"
 												>
-													<i>{err.email}</i>
+													<i>{error}</i>
 												</div>
 											)}
 										</div>
@@ -70,16 +117,17 @@ const SignUp = ({ err }) => {
 												name="password"
 												placeholder="Password"
 												autoComplete="off"
+												ref={passwordRef}
 											/>
 											<label htmlFor="password">Password</label>
-											{err && (
+											{error === "Please enter a password!" && (
 												<div
 													id="passwordError"
 													className="alert alert-danger"
 													data-bs-dismiss="alert"
 													role="alert"
 												>
-													<i>{err.password}</i>
+													<i>{error}</i>
 												</div>
 											)}
 										</div>
@@ -88,6 +136,11 @@ const SignUp = ({ err }) => {
 											<button
 												className="btn btn-lg btn-primary btn-login fw-bold text-uppercase"
 												type="submit"
+												onClick={() => {
+													setEmail(emailRef.current.value);
+													setPassword(passwordRef.current.value);
+													setUserName(userNameRef.current.value);
+												}}
 											>
 												Register
 											</button>
@@ -99,7 +152,10 @@ const SignUp = ({ err }) => {
 											</Link>
 										</div>
 
-										<Link className="d-block text-center mt-2 small" to="/login">
+										<Link
+											className="d-block text-center mt-2 small"
+											to="/login"
+										>
 											Have an account? Sign In
 										</Link>
 
