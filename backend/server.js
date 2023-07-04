@@ -3,7 +3,7 @@ var socket = require("socket.io");
 const exportedRoutes = require("./routes/routes");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
+var cors = require('cors')
 const app = express();
 
 //cookies
@@ -35,6 +35,17 @@ mongoose
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+	cors(
+		{
+			"origin": [3000],
+			"methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+			"preflightContinue": false,
+			"optionsSuccessStatus": 204
+		  }
+	)
+)
 
 app.set("view engine", "ejs");
 app.use(exportedRoutes);
