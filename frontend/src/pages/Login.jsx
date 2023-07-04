@@ -14,7 +14,7 @@ const Login = () => {
 		axios
 			.post("http://localhost:4000/login", { email, password })
 			.then((res) => {
-				if (res.data.userName) {
+				if (res.data.username !== undefined) {
 					localStorage.setItem("userToken", res.data.userToken);
 					localStorage.setItem("userName", res.data.username);
 					localStorage.setItem("userId", res.data.userId);
