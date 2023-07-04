@@ -14,8 +14,11 @@ const Login = ({ err }) => {
 		axios
 			.post("http://localhost:4000/login", { email, password })
 			.then((res) => {
+				console.log({res});
 				if(res.data){
-					localStorage.setItem("userToken",res.data)
+					localStorage.setItem("userToken",res.data.userToken)
+					localStorage.setItem("userName",res.data.username)
+					localStorage.setItem("userId",res.data.userId)
 					navigate("/")
 				} else setError(res.data);
 				// res.data === "loginPost" ? navigate("/") : setError(res.data);

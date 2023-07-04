@@ -40,10 +40,10 @@ const postDetail = (req, res) => {
 				.sort({ createdAt: -1 })
 				.then((result2) => {
 					const err = {};
-					res.send( { post: result1, comments: result2, err: err });
+					res.send({ post: result1, comments: result2, err: err });
 				})
 				.catch((err) => {
-					res.send( { err: err.errors });
+					res.send({ err: err.errors });
 				});
 		})
 		.catch((err) => console.log(err));
@@ -72,14 +72,14 @@ const commentCreate = (req, res) => {
 				.sort({ createdAt: -1 })
 				.then((result2) => {
 					const err1 = {};
-					res.send( {
+					res.send({
 						post: result1,
 						comments: result2,
 						err: err1,
 					});
 				})
 				.catch((err) => {
-					res.send( { err: err.errors });
+					res.send({ err: err.errors });
 				});
 		})
 		.catch((err) => {
@@ -101,28 +101,28 @@ const signupGet = (req, res) => {
 };
 
 const loginGet = (req, res) => {
-	res.send( {error: null });
+	res.send({ error: null });
 };
 
 const signupPost = async (req, res) => {
-    // Check if this user is already in the DB.
-    let existedUser = await User.findOne({ email: req.body.email });
+	// Check if this user is already in the DB.
+	let existedUser = await User.findOne({ email: req.body.email });
 
-    if (existedUser) {
-        res.send("user is exist");
-    } else {
-        let user = new User(req.body);
-        user
-            .save()
-            .then(() => {
-                const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
-                res.cookie("userToken", userToken, { httpOnly: true });
-                res.send("signUpPost");
-            })
-            .catch((err) => {
-                res.send(err);
-            });
-    }
+	if (existedUser) {
+		res.send("user is exist");
+	} else {
+		let user = new User(req.body);
+		user
+			.save()
+			.then(() => {
+				const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
+				res.cookie("userToken", userToken, { httpOnly: true });
+				res.send("signUpPost");
+			})
+			.catch((err) => {
+				res.send(err);
+			});
+	}
 };
 
 const loginPost = async (req, res) => {
@@ -132,7 +132,7 @@ const loginPost = async (req, res) => {
 		const user = await User.login(email, password);
 		const userToken = jwt.sign({ user }, process.env.JWT_TEXT);
 		res.cookie("userToken", userToken, { httpOnly: true });
-		res.send(userToken);
+		res.send({ userToken, username: user.username, userId: user._id });
 	} catch (error) {
 		res.send(error.message);
 	}
@@ -146,7 +146,7 @@ const logoutGet = (req, res) => {
 const getEditModelPage = (req, res) => {
 	Post.findById(req.params.id)
 		.then((result) => {
-			res.send( { post: result });
+			res.send({ post: result });
 		})
 		.catch((err) => console.log(err));
 };
@@ -158,7 +158,7 @@ const getUpdatePost = (req, res) => {
 				.sort({ createdAt: -1 })
 				.then((result2) => {
 					const err1 = {};
-					res.send( {
+					res.send({
 						post: result,
 						comments: result2,
 						err: err1,
@@ -171,12 +171,12 @@ const getUpdatePost = (req, res) => {
 };
 
 const getProfilePage = (req, res) => {
-	const err = '';
+	const err = "";
 	const message = "";
 	User.findById(req.params.id)
-		.then((user1) => res.send( { user1: user1, err, message }))
+		.then((user1) => res.send({ user1: user1, err, message }))
 		.catch((err) => {
-			res.send( { err: err.errors });
+			res.send({ err: err.errors });
 		});
 };
 
@@ -185,31 +185,31 @@ const changePassword = async (req, res) => {
 		const err = "";
 		const user1 = "";
 		const message = "Please enter a password!";
-		res.send( { message, user1, err });
-	}else {
-	if (req.body.password == req.body.confirmPassword) {
-		const cryptPassword = await bcrypt.hashSync(req.body.password, 12);
-
-		const err = "";
-		const successMessage = "Password is changed!";
-
-		await User.findByIdAndUpdate(req.params.id, { password: cryptPassword });
-		User.findById(req.params.id)
-			.then((user1) =>
-				res.send( { message: successMessage, err, user1: user1 })
-			)
-			.catch((err) => res.send( { err: err.errors }));
+		res.send({ message, user1, err });
 	} else {
-		const err = "";
-		const user1 = "";
-		const message = "password is not same";
-		res.send( { message, user1, err });
+		if (req.body.password == req.body.confirmPassword) {
+			const cryptPassword = await bcrypt.hashSync(req.body.password, 12);
+
+			const err = "";
+			const successMessage = "Password is changed!";
+
+			await User.findByIdAndUpdate(req.params.id, { password: cryptPassword });
+			User.findById(req.params.id)
+				.then((user1) =>
+					res.send({ message: successMessage, err, user1: user1 })
+				)
+				.catch((err) => res.send({ err: err.errors }));
+		} else {
+			const err = "";
+			const user1 = "";
+			const message = "password is not same";
+			res.send({ message, user1, err });
+		}
 	}
-}
 };
 
 const settingsPage = (req, res) => {
-	res.send(' setting page');
+	res.send(" setting page");
 };
 
 module.exports = {
