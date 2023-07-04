@@ -5,8 +5,9 @@ import PostModal from "../components/PostModal";
 const HomePage = () => {
     const [posts, setPosts] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    let USER_TOKEN = localStorage.getItem("userToken");
-    axios.defaults.headers.common["userToken"] = USER_TOKEN;
+    let userToken = localStorage.getItem("userToken") || null;
+	let userName = localStorage.getItem("userName") || null
+    axios.defaults.headers.common["userToken"] = userToken;
     
     useEffect(() => {
         axios.get("http://localhost:4000/").then((res) => {
@@ -20,7 +21,7 @@ const HomePage = () => {
     return (
         <>
             <div className="container text-center">
-                <button
+                {userName && <button
                     type="button"
                     className="btn btn-warning btn-lg mb-4 mt-5 fs-2 btn-anime"
                     // data-bs-toggle="modal"
@@ -29,7 +30,7 @@ const HomePage = () => {
                     onClick={handleShow}
                 >
                     Ask a question!
-                </button>
+                </button>}
 
                 <div className="users" style={{ marginTop: "50px" }}>
                     {posts && (
