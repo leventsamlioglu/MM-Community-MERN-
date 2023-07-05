@@ -211,3 +211,7 @@ nav {
   color: white !important;
   background-color: #3b5998;
 }
+
+.profile{
+  height: calc(100vh - 116px);
+}
