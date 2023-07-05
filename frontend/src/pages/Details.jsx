@@ -65,7 +65,7 @@ const getEditPage=()=> {
 				
 
 				<i>{ err && err['title'] }</i>
-				<p class="card-text fs-5"> {post && post.question}</p>
+				<p className="card-text fs-5"> {post && post.question}</p>
 
 			
 				

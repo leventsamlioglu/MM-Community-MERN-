@@ -3,7 +3,7 @@ export default function CommentModal (){
 
 
 
-    
+
 
 
 
@@ -13,7 +13,7 @@ export default function CommentModal (){
         <div
 	className="modal fade"
 	id="commentModal"
-	tabindex="-1"
+	tabIndex="-1"
 	role="dialog"
 	aria-labelledby="commentModalLabel"
 	aria-hidden="true"
