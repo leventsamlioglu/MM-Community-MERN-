@@ -50,6 +50,7 @@ const Login = () => {
 												name="email"
 												placeholder="name@example.com"
 												autoComplete="email"
+												autoFocus
 												ref={emailRef}
 											/>
 											{error && error === "User could not be found" && (
