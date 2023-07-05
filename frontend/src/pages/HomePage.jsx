@@ -5,8 +5,9 @@ import PostModal from "../components/PostModal";
 const HomePage = () => {
     const [posts, setPosts] = useState([]);
     const [showModal, setShowModal] = useState(false);
+
     let userToken = localStorage.getItem("userToken") || null;
-	let userName = localStorage.getItem("userName") || null
+    let userName = localStorage.getItem("userName") || null
     axios.defaults.headers.common["userToken"] = userToken;
     
     useEffect(() => {
@@ -89,7 +90,7 @@ const HomePage = () => {
                 </div>
             </div>
 
-            {showModal && <PostModal click={handleClose} show={showModal} />}
+            {showModal && <PostModal click={handleClose} show={showModal} setShow={setShowModal}/>}
         </>
     );
 };
