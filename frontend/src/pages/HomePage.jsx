@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PostModal from "../components/PostModal";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
     const [posts, setPosts] = useState([]);
@@ -62,12 +63,12 @@ const HomePage = () => {
                                                     {post.question.slice(0, 250)}
                                                 </p>
                                                 <div className="mb-2">
-                                                    <a
-                                                        href="/posts/create/<%= post._id %>"
-                                                        className="fst-italic"
-                                                    >
-                                                        See more...
-                                                    </a>
+                                                <Link
+                                                    to={`/posts/create/${post._id}`} className="fst-italic">
+                                                    See more...
+                                                                </Link>  
+                                                                          
+                                                                
                                                 </div>
                                             </div>
 
