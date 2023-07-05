@@ -90,9 +90,9 @@ const HomePage = () => {
                     )}
                     {!posts && <p>There are no blogs to display...</p>}
                 </div>
-                <Footer />
+                
             </div>
-
+            <Footer />                       
             {showModal && <PostModal click={handleClose} show={showModal} setShow={setShowModal}/>}
         </>
     );
