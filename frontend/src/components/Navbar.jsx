@@ -23,13 +23,13 @@ const Navbar = () => {
                 {username ? (
                     <>
                         <li className="nav-item active">
-                            <p className="nav-link">
+                            <i className="nav-link">
                                 Welcome: <i>{username}</i>
-                            </p>
+                            </i>
                         </li>
                         <li className="nav-item active">
                             <Link to={`/profile/${id}`} className="nav-link">
-                                Profile
+                               | Profile |
                             </Link>
                         </li>
                         <li className="nav-item active">
@@ -42,7 +42,7 @@ const Navbar = () => {
                     <>
                         <li className="nav-item active">
                             <Link to="/login" className="nav-link">
-                                Login
+                                Login |
                             </Link>
                         </li>
                         <li className="nav-item active">
