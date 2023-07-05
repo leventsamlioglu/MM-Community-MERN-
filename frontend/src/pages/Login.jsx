@@ -18,6 +18,7 @@ const Login = () => {
 					localStorage.setItem("userToken", res.data.userToken);
 					localStorage.setItem("userName", res.data.username);
 					localStorage.setItem("userId", res.data.userId);
+					localStorage.setItem("userEmail", res.data.userEmail);
 					navigate("/");
 				} else setError(res.data);
 			})

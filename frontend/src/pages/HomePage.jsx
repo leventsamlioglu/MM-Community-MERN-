@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import PostModal from "../components/PostModal";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 
 const HomePage = () => {
     const [posts, setPosts] = useState([]);
@@ -89,6 +90,7 @@ const HomePage = () => {
                     )}
                     {!posts && <p>There are no blogs to display...</p>}
                 </div>
+                <Footer />
             </div>
 
             {showModal && <PostModal click={handleClose} show={showModal} setShow={setShowModal}/>}
