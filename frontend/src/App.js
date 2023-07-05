@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Details from "./pages/Details";
 import EditModal from "./components/EditModal";
+import CommentModal from "./components/CommentModal";
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 					<Route path="/logout" element={<HomePage />} />
 					<Route path="/posts/create/:id" element={<Details />} />
 					<Route path="/editPost/:id" element={<EditModal />} />
+					
 				</Routes>
 				<Footer />
 			</BrowserRouter>
