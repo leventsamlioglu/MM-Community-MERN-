@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useRef, useState } from "react";
+import {useNavigate} from "react-router-dom"
+
 
 const Profile = () => {
+	const navigate = useNavigate()
 	const [error, setError] = useState("");
 	const passwordRef1 = useRef();
 	const passwordRef2 = useRef();
@@ -20,7 +23,6 @@ const Profile = () => {
 				confirmPassword,
 			})
 			.then((res) => {
-				console.log({ res });
 				if (
 					res.data.message === "Please enter a password!" ||
 					res.data.message === "Passwords don't match!"
@@ -28,8 +30,9 @@ const Profile = () => {
 					setError(res.data.message);
 				}
 			});
-		console.log("submit");
+			navigate("/")
 	};
+	
 	return (
 		<div className="d-flex profile fs-3">
 			<form
