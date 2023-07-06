@@ -167,7 +167,7 @@ export default function Details() {
 									<div className="card mb-4">
 										<div className="card-body">
 											<div className="d-flex flex-column justify-content-between">
-												<p>{comment.comment}</p>
+												<p style={{fontFamily:"Handlee"}}>{comment.comment}</p>
 											</div>
 											<div className="d-flex justify-content-between">
 												<div className="d-flex flex-row align-items-center">
