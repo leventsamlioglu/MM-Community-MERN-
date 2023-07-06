@@ -28,7 +28,7 @@ export default function Details() {
 	const username = localStorage.getItem("userName");
 	const userToken = localStorage.getItem("userToken") || null;
 	axios.defaults.headers.common["userToken"] = userToken;
-
+	
 	useEffect(() => {
 		axios
 			.get(`http://localhost:4000/posts/create/${id}`)
@@ -64,6 +64,8 @@ export default function Details() {
 		(Date.now() - date) / 1000 / 60 / 60 / 24
 	).toString();
 
+	let user = post.owner ? post.owner.username : ""
+	
 	return (
 		<div>
 			<div
@@ -119,7 +121,20 @@ export default function Details() {
 						</Button>
 					)}
 				</div>
-				<div className="card-footer text-muted">Updated {formattedDate} days ago</div>
+
+				<div className="card-footer text-muted d-flex flex-row align-items-center justify-content-between">
+					<div className="d-flex flex-row align-items-center">
+						<img
+							src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(32).webp"
+							alt="avatar"
+							width="25"
+							height="25"
+						/>
+						{/* ---------------------- */}
+						{user && <p className="small mb-0 ms-2 ">Posted by {user}</p>}
+					</div>
+					<i>Updated {formattedDate} days ago</i>
+				</div>
 			</div>
 
 			{/* <!-- OpenAI Comment --> */}
@@ -167,7 +182,9 @@ export default function Details() {
 									<div className="card mb-4">
 										<div className="card-body">
 											<div className="d-flex flex-column justify-content-between">
-												<p style={{fontFamily:"Handlee"}}>{comment.comment}</p>
+												<p style={{ fontFamily: "Handlee" }}>
+													{comment.comment}
+												</p>
 											</div>
 											<div className="d-flex justify-content-between">
 												<div className="d-flex flex-row align-items-center">
