@@ -171,7 +171,7 @@ nav {
 }
 
 .bg-image {
-  background-image: url("https://source.unsplash.com/WEQbe2jBg40/600x1200");
+  background-image: url("../public/card-left.jpeg");
   background-size: cover;
   background-position: center;
 }
@@ -192,7 +192,7 @@ nav {
   width: 45%;
   /* Link to your background image using in the property below! */
   background: scroll center
-    url("https://source.unsplash.com/WEQbe2jBg40/414x512");
+    url("../public/card-left.jpeg");
   background-size: cover;
 }
 
