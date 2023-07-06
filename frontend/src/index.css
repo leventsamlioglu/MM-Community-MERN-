@@ -167,7 +167,7 @@ nav {
 /* Login Page */
 
 .login {
-  min-height: 100vh;
+  height: calc(100vh - 106px);
 }
 
 .bg-image {
@@ -210,4 +210,9 @@ nav {
 .btn-facebook {
   color: white !important;
   background-color: #3b5998;
+}
+
+/* Profile page */
+.profile{
+  height: calc(100vh - 116px);
 }

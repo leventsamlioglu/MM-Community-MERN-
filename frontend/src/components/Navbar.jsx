@@ -4,6 +4,7 @@ const Navbar = () => {
     const navigate = useNavigate()
     
     let username = localStorage.getItem("userName")
+    let id = localStorage.getItem("userId")
     
     const clickHandler=()=>{
         localStorage.removeItem("userName")
@@ -22,13 +23,13 @@ const Navbar = () => {
                 {username ? (
                     <>
                         <li className="nav-item active">
-                            <p className="nav-link">
+                            <i className="nav-link">
                                 Welcome: <i>{username}</i>
-                            </p>
+                            </i>
                         </li>
                         <li className="nav-item active">
-                            <Link to='/profile/<%=userId%>' className="nav-link">
-                                Profile
+                            <Link to={`/profile/${id}`} className="nav-link">
+                               | Profile |
                             </Link>
                         </li>
                         <li className="nav-item active">
@@ -41,7 +42,7 @@ const Navbar = () => {
                     <>
                         <li className="nav-item active">
                             <Link to="/login" className="nav-link">
-                                Login
+                                Login |
                             </Link>
                         </li>
                         <li className="nav-item active">

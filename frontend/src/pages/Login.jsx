@@ -18,6 +18,7 @@ const Login = () => {
 					localStorage.setItem("userToken", res.data.userToken);
 					localStorage.setItem("userName", res.data.username);
 					localStorage.setItem("userId", res.data.userId);
+					localStorage.setItem("userEmail", res.data.userEmail);
 					navigate("/");
 				} else setError(res.data);
 			})
@@ -50,6 +51,7 @@ const Login = () => {
 												name="email"
 												placeholder="name@example.com"
 												autoComplete="email"
+												autoFocus
 												ref={emailRef}
 											/>
 											{error && error === "User could not be found" && (
