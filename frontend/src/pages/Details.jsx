@@ -4,7 +4,6 @@ import CommentModal from "../components/CommentModal";
 // import Like from "../components/Like";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-
 import Button from "react-bootstrap/Button";
 
 export default function Details() {
@@ -13,20 +12,17 @@ export default function Details() {
 	const [post, setPost] = useState({});
 	const [err, setErr] = useState();
 	const [comments, setComments] = useState([]);
-	// const [question, setQuestion] = useState();
 	const [showModal, setShowModal] = useState(false);
 	const [showComment, setShowComment] = useState(false);
 	const [postOwner, setPostOwner] = useState();
 
 	const { id } = useParams();
-	console.log({ comments });
 
 	const handleClose = () => setShowModal(false);
 	const handleShow = () => setShowModal(true);
 
 	const commentClose = () => setShowComment(false);
 	const commentShow = () => setShowComment(true);
-	console.log(comments);
 
 	const userId = localStorage.getItem("userId");
 	const username = localStorage.getItem("userName");
@@ -37,7 +33,6 @@ export default function Details() {
 		axios
 			.get(`http://localhost:4000/posts/create/${id}`)
 			.then((res) => {
-				console.log("res.data", res.data);
 				setPostOwner(res.data.post.owner._id);
 				setPost(res.data.post);
 				setComments(res.data.comment);
@@ -192,7 +187,6 @@ export default function Details() {
 														</Button>
 													) : null}
 												</div>
-
 												{/* <Like /> */}
 											</div>
 										</div>
