@@ -32,7 +32,7 @@ const Profile = () => {
 			});
 			navigate("/")
 	};
-	
+
 	return (
 		<div className="d-flex profile fs-3">
 			<form
@@ -52,9 +52,6 @@ const Profile = () => {
 							value={userName}
 						/>
 					</div>
-					{/* <% if(err) { %>
-					<i><%= err.username %></i>
-					<% } %> */}
 				</div>
 				<div className="form-group row">
 					<label htmlFor="staticEmail" className="col-sm-5 col-form-label">
@@ -69,9 +66,6 @@ const Profile = () => {
 							value={userEmail}
 						/>
 					</div>
-					{/* <% if(err) { %>
-					<i><%= err.email %></i>
-					<% } %> */}
 				</div>
 				<div className="form-group row">
 					<label htmlFor="inputPassword" className="col-sm-5 col-form-label">
@@ -120,11 +114,6 @@ const Profile = () => {
 					</div>
 				</div>
 				{error && <p className="text-center text-danger mt-5">{error}</p>}
-				{/* <% if(message) { %>
-				<p className="text-center text-danger"><%= message %></p>
-				<% } %> <% if(err) { %>
-				<p className="text-center text-danger"><%= err.password %></p>
-				<% } %> */}
 				<button
 					type="submit"
 					className="btn btn-primary mt-3"
