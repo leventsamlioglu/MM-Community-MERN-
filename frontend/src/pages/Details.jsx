@@ -58,6 +58,12 @@ export default function Details() {
 			});
 	};
 
+	// Calculate elapsed update time of post
+	let date = new Date(post.updatedAt);
+	let formattedDate = Math.floor(
+		(Date.now() - date) / 1000 / 60 / 60 / 24
+	).toString();
+
 	return (
 		<div>
 			<div
@@ -113,7 +119,7 @@ export default function Details() {
 						</Button>
 					)}
 				</div>
-				<div className="card-footer text-muted">Last update: 3 hours ago</div>
+				<div className="card-footer text-muted">Updated {formattedDate} days ago</div>
 			</div>
 
 			{/* <!-- OpenAI Comment --> */}
