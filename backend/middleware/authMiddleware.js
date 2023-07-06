@@ -21,8 +21,8 @@ const checkTokenHome = (req, res, next) => {
 };
 
 const checkTokenPage = (req, res, next) => {
-	const isToken = req.cookies.userToken;
-
+	const isToken = req.headers.usertoken;
+	
 	if (isToken) {
 		jwt.verify(isToken, process.env.JWT_TEXT, async (err, userInfo) => {
 			if (err) {
@@ -31,6 +31,7 @@ const checkTokenPage = (req, res, next) => {
 				res.locals.userId = userInfo.user._id;
 				res.locals.username = userInfo.user.username;
 				res.locals.user = userInfo.user.username;
+				// console.log({userInfo});
 				next();
 			}
 		});

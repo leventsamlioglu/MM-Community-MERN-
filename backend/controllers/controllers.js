@@ -39,17 +39,17 @@ const postDetail = (req, res) => {
             Comment.find({ owner: req.params.id }).populate("user")
                 .sort({ createdAt: -1 })
                 .then((result2) => {
-                    
-                    res.send({ post: result1, comments: result2, err: err });
+                    console.log({result1});
+                    // console.log({result2});
+                    // res.send({ post: result1, comments: result2, err: err });
+                    res.send({post:result1});
+					// res.send("Hello")
                 })
                 .catch((err) => {
                     res.send({ err: err.errors });
                 });
         })
         .catch((err) => console.log(err));
-
-
-
 };
 
 const postDelete = (req, res) => {
@@ -67,7 +67,6 @@ const commentCreate = (req, res) => {
         owner: req.params.id,
         
     };
-console.log(commentObj);
     const newComment = new Comment(commentObj);
     newComment.save();
     Post.findById(req.params.id)
