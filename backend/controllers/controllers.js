@@ -91,7 +91,7 @@ console.log(commentObj);
         .catch((err) => {
             console.log(err);
         });
-
+	}
 	
 
 const commentDelete = (req, res) => {
