@@ -22,7 +22,6 @@ const checkTokenHome = (req, res, next) => {
 
 const checkTokenPage = (req, res, next) => {
 	const isToken = req.headers.usertoken;
-	
 	if (isToken) {
 		jwt.verify(isToken, process.env.JWT_TEXT, async (err, userInfo) => {
 			if (err) {

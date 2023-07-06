@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EditModal from "../components/EditModal";
 import CommentModal from "../components/CommentModal";
-import Like from "../components/Like";
+// import Like from "../components/Like";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 
 export default function Details() {
 	const navigate = useNavigate();
-	
+
 	const [post, setPost] = useState({});
 	const [err, setErr] = useState();
 	const [comments, setComments] = useState([]);
@@ -19,12 +19,14 @@ export default function Details() {
 	const [postOwner, setPostOwner] = useState();
 
 	const { id } = useParams();
+	console.log({ comments });
 
 	const handleClose = () => setShowModal(false);
 	const handleShow = () => setShowModal(true);
 
 	const commentClose = () => setShowComment(false);
 	const commentShow = () => setShowComment(true);
+	console.log(comments);
 
 	const userId = localStorage.getItem("userId");
 	const username = localStorage.getItem("userName");
@@ -35,25 +37,31 @@ export default function Details() {
 		axios
 			.get(`http://localhost:4000/posts/create/${id}`)
 			.then((res) => {
-				console.log("res.data",res.data);
+				console.log("res.data", res.data);
 				setPostOwner(res.data.post.owner._id);
 				setPost(res.data.post);
-				setComments(res.data.comments);
+				setComments(res.data.comment);
 				setErr(res.data.err);
 			})
 			.catch((err) => console.log(err));
-	},[]);
+	}, [id]);
 
 	const deletePost = () => {
 		axios
 			.post(`http://localhost:4000/postDelete/${id}`)
-			.then((res) => console.log(res))
+			.then((res) => {})
 			.catch((err) => console.log(err));
 
 		navigate("/");
 	};
-	console.log({userId});
-	console.log({postOwner});
+
+	const commentDelete = (commentId) => {
+		axios
+			.post(`http://localhost:4000/comments/delete/${commentId}`)
+			.then((res) => {
+				window.location.reload();
+			});
+	};
 
 	return (
 		<div>
@@ -76,7 +84,7 @@ export default function Details() {
 							<Button
 								type="button"
 								id="editButton"
-								style={{ width: "100%" ,background:"none"}}
+								style={{ width: "100%", background: "none" }}
 								className="btn btn-outline-warning"
 								data-bs-toggle="modal"
 								data-bs-target="#exampleModal"
@@ -87,7 +95,7 @@ export default function Details() {
 
 							<Button
 								id="deleteButton"
-								style={{ width: "100%", marginTop: " 5px",background:"none" }}
+								style={{ width: "100%", marginTop: " 5px", background: "none" }}
 								className="btn btn-outline-danger mb-3"
 								onClick={() => deletePost()}
 							>
@@ -147,8 +155,8 @@ export default function Details() {
 			{/* <!-- Comments --> */}
 
 			{comments &&
-				comments.map((comment) => (
-					<div className="row d-flex justify-content-center">
+				comments.map((comment, index) => (
+					<div key={index} className="row d-flex justify-content-center">
 						<div className="col-md-7 col-lg-6">
 							<div
 								className="card shadow-0 border"
@@ -160,13 +168,6 @@ export default function Details() {
 											<div className="d-flex flex-column justify-content-between">
 												<p>{comment.comment}</p>
 											</div>
-											<div>
-												{username == comment.user ? (
-													<Button className="btn btn-outline-danger mb-3">
-														Delete{" "}
-													</Button>
-												) : null}
-											</div>
 											<div className="d-flex justify-content-between">
 												<div className="d-flex flex-row align-items-center">
 													<img
@@ -175,12 +176,24 @@ export default function Details() {
 														width="25"
 														height="25"
 													/>
-													<p className="small mb-0 ms-2">
-														Commented by {comment.owner.username}
+													<p className="small mb-0 ms-2 ">
+														Commented by {comment.user}
 													</p>
+
+													{username === comment.user ? (
+														<Button
+															className="btn btn-outline-danger"
+															style={{ background: "none", marginLeft: "6em" }}
+															onClick={() => {
+																commentDelete(comment._id);
+															}}
+														>
+															Delete
+														</Button>
+													) : null}
 												</div>
 
-												<Like />
+												{/* <Like /> */}
 											</div>
 										</div>
 									</div>

@@ -33,23 +33,22 @@ const postCreate = async (req, res) => {
 };
 
 const postDetail = (req, res) => {
-
     Post.findById(req.params.id).populate("owner")
-        .then((result1) => {
-            Comment.find({ owner: req.params.id }).populate("user")
+        .then((post) => {
+            Comment.find({ owner: req.params.id })
                 .sort({ createdAt: -1 })
-                .then((result2) => {
-                    console.log({result1});
+                .then((comment) => {
+                    // console.log({result1});
                     // console.log({result2});
                     // res.send({ post: result1, comments: result2, err: err });
-                    res.send({post:result1});
 					// res.send("Hello")
+					res.send({post,comment});
                 })
                 .catch((err) => {
-                    res.send({ err: err.errors });
+					res.send({ err: err.errors });
                 });
-        })
-        .catch((err) => console.log(err));
+			})
+			.catch((err) => console.log(err));
 };
 
 const postDelete = (req, res) => {
