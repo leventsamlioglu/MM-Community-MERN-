@@ -84,26 +84,26 @@ export default function Details() {
 				<div>
 					{userId === postOwner ? (
 						<div>
-							<Button
+							<button
 								type="button"
 								id="editButton"
-								style={{ width: "100%", background: "none" }}
+								style={{ width: "100%"}}
 								className="btn btn-outline-warning"
 								data-bs-toggle="modal"
 								data-bs-target="#exampleModal"
 								onClick={handleShow}
 							>
 								Edit
-							</Button>
+							</button>
 
-							<Button
+							<button
 								id="deleteButton"
-								style={{ width: "100%", marginTop: " 5px", background: "none" }}
+								style={{ width: "100%", marginTop: " 5px" }}
 								className="btn btn-outline-danger mb-3"
 								onClick={() => deletePost()}
 							>
 								Delete
-							</Button>
+							</button>
 						</div>
 					) : null}
 				</div>
@@ -130,7 +130,6 @@ export default function Details() {
 							width="25"
 							height="25"
 						/>
-						{/* ---------------------- */}
 						{user && <p className="small mb-0 ms-2 ">Posted by {user}</p>}
 					</div>
 					<i>Updated {formattedDate} days ago</i>
@@ -182,7 +181,7 @@ export default function Details() {
 									<div className="card mb-4">
 										<div className="card-body">
 											<div className="d-flex flex-column justify-content-between">
-												<p style={{ fontFamily: "Handlee" }}>
+												<p style={{ fontFamily: "Handlee", fontSize:"1.5em" }}>
 													{comment.comment}
 												</p>
 											</div>
@@ -194,22 +193,21 @@ export default function Details() {
 														width="25"
 														height="25"
 													/>
-													<p className="small mb-0 ms-2 ">
+													<p className="small mb-0 ms-2" style={{fontSize:"0.7em"}}>
 														Commented by {comment.user}
 													</p>
 
+													</div>
 													{username === comment.user ? (
-														<Button
+														<button
 															className="btn btn-outline-danger"
-															style={{ background: "none", marginLeft: "6em" }}
 															onClick={() => {
 																commentDelete(comment._id);
 															}}
 														>
 															Delete
-														</Button>
+														</button>
 													) : null}
-												</div>
 												{/* <Like /> */}
 											</div>
 										</div>
