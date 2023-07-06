@@ -1,20 +1,30 @@
 import { useRef, useState } from "react";
+import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import CloseButton from "react-bootstrap/CloseButton";
 import axios from "axios";
+import { Navigate, useParams } from "react-router-dom";
 
-const EditModal = ({ post, show }) => {
+
+
+const EditModal = ({ post, show,click,setShow }) => {
 	const [title, setTitle] = useState("");
 	const [question, setQuestion] = useState("");
 	const titleRef = useRef();
 	const questionRef = useRef();
-
+const {id}=useParams()
 	const submitHandler = () => {
 		axios
-			.post(`http://localhost:4000/updatePost/${post._id}`, { title, question })
+			.post(`http://localhost:4000/updatePost/${post._id}`, {
+                title: titleRef.current.value,
+                question: questionRef.current.value,
+            })
 			.then((res) => {
 				console.log(res);
 			})
 			.catch((err) => console.log(err));
+			//  Navigate(`/posts/create/${id}`)
 	};
 	return (
 		<Modal
@@ -23,38 +33,47 @@ const EditModal = ({ post, show }) => {
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
 		>
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">
+			
+			<div className="modal-dialog" role="document">
+			
+				<div className="modal-content">
+				<Modal.Header>
+					<Modal.Title className="modal-header">
+						<h5 className="modal-title" id="exampleModalLabel">
 							Post
 						</h5>
-						<button
+						</Modal.Title>
+						<CloseButton onClick={() => setShow(false)}
 							type="button"
-							class="close"
+							className="close"
 							data-bs-dismiss="modal"
 							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<form
-							onSubmit={(e) => {
-								e.preventDefault();
-								submitHandler();
-							}}
+						
+							
+						 />
+						
+						</Modal.Header>
+						
+						
+					
+					<div className="modal-body">
+					<Modal.Body>
+					<Form
+							// onSubmit={(e) => {
+							// 	e.preventDefault();
+								
+							// }}
 						>
 							<label for="title">Title</label>
 							<input
-								class="form-control mb-3"
+								className="form-control mb-3"
 								id="title"
 								name="title"
 								ref={titleRef}
 							/>
-							<div class="form-group mb-3">
+							<div className="form-group mb-3">
 								<textarea
-									class="form-control border-danger"
+									className="form-control border-danger"
 									id="question"
 									name="question"
 									rows="3"
@@ -63,26 +82,28 @@ const EditModal = ({ post, show }) => {
 									{post.question}
 								</textarea>
 							</div>
-							<div class="modal-footer">
-								<button
+							<div className="modal-footer">
+							<Button onClick={click}
 									type="button"
-									class="btn btn-secondary"
+									className="btn btn-secondary"
 									data-bs-dismiss="modal"
 								>
 									Close
-								</button>
-								<button
+									</Button>
+									<Button
 									type="submit"
-									class="btn btn-primary"
+									className="btn btn-primary"
 									onClick={() => {
-										setTitle(titleRef.current.value);
-										setQuestion(questionRef.current.value);
+										// setTitle(titleRef.current.value);
+										// setQuestion(questionRef.current.value);
+										submitHandler();
 									}}
 								>
 									Save changes
-								</button>
+									</Button>
 							</div>
-						</form>
+							</Form>
+							</Modal.Body>
 					</div>
 				</div>
 			</div>

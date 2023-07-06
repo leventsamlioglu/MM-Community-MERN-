@@ -3,7 +3,9 @@ import EditModal from "../components/EditModal"
 import CommentModal from "../components/CommentModal";
 import Like from "../components/Like"
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+import Button from "react-bootstrap/Button";
 
 
 export default function Details () {
@@ -15,21 +17,26 @@ const [err,setErr]=useState();
 const[comments,setComments]=useState([]);
 const[question,setQuestion]=useState()
 const {id}=useParams()
-
+console.log(id);
 const handleClose = () => setShowModal(false);
 const handleShow = () => setShowModal(true);
-const [showModal, setShowModal] = useState(false);
 
+const commentClose = () => setShowComment(false);
+const commentShow = () => setShowComment(true);
+
+const [showModal, setShowModal] = useState(false);
+const [showComment, setShowComment] = useState(false);
+const [postOwner,setPostOwner]=useState();
 
 const userId=localStorage.getItem("userId");
 const username=localStorage.getItem("userName")
 console.log(userId);
-
+const navigate = useNavigate();
 useEffect(()=> {
 
 axios.get(`http://localhost:4000/posts/create/${id}`)
     .then((res)=> {console.log(res.data);
-         setPost(res.data.post); setComments(res.data.comments); setErr(res.data.err)})
+        setPostOwner(res.data.post) ; setPost(res.data.post); setComments(res.data.comments); setErr(res.data.err)})
     .catch(err=>console.log(err))
 
 },[])
@@ -38,9 +45,12 @@ axios.get(`http://localhost:4000/posts/create/${id}`)
 
 
 
-const getEditPage=()=> {
-
-
+const deletePost=()=> {
+    axios.post(`http://localhost:4000/postDelete/${id}`)
+    .then(res=> console.log(res))
+    .catch(err=>console.log(err));
+   
+navigate('/')
 
 }
 
@@ -75,10 +85,10 @@ const getEditPage=()=> {
             <div>
 			{ 
             
-                (userId===post.owner) ?
+                (userId===postOwner) ?
                 <div>    
 			
-				<button
+				<Button
 					type="button"
 					id="editbutton"
 					style={{width: "100%"}}
@@ -88,17 +98,18 @@ const getEditPage=()=> {
                     onClick={handleShow}
 				>
 					Edit
-				</button>
+				</Button>
 			
-			<form action={`/postDelete/$ {post._id}`} method="post">
-				<button
+			
+				<Button
 					id="deleteButton"
 					style={{width: "100%", marginTop:" 5px"}}
 					className="btn btn-outline-danger mb-3"
+                    onClick={()=>deletePost()}
 				>
 					Delete
-				</button>
-			</form>
+				</Button>
+			
             </div>
             :null
 			  }
@@ -109,14 +120,16 @@ const getEditPage=()=> {
                 
                 userId && (
 
-			<button
+			<Button
 				className="btn btn-primary"
 				type="button"
 				data-bs-toggle="modal"
 				data-bs-target="#commentModal"
+                onClick={commentShow} 
 			>
 				Make a Comment
-			</button>
+			</Button>
+            
                 )
 			}
             </div>
@@ -172,12 +185,12 @@ const getEditPage=()=> {
 									{ 
                                          (username==comment.user) ?
                                     
-									<form
-										action="/comments/delete/<%= comment._id%>"
-										method="post"
-									>
-										<button className="btn btn-outline-danger mb-3">Delete</button>
-									</form>
+                                        
+										
+									
+										<Button className="btn btn-outline-danger mb-3" 
+                                        >Delete </Button>
+                                       
                                     :null
                                     
                                     }
@@ -191,7 +204,7 @@ const getEditPage=()=> {
 											height="25"
 										/>
 										<p className="small mb-0 ms-2">
-											Commented by {comment && comment.user}
+											Commented by { comment.owner.username}
 										</p>
 									</div>
 
@@ -215,7 +228,8 @@ const getEditPage=()=> {
 		{showModal && <EditModal  click={handleClose} show={showModal} setShow={setShowModal} post={post} />}
 
 		{/* <!-- Comment Modal --> */}
-		<CommentModal />
+        {showComment && <CommentModal  clickComment={commentClose} showCom={showComment} setShowCom={setShowComment} />}
+
 	</div>
 
 
