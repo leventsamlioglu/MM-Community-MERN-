@@ -33,23 +33,19 @@ const postCreate = async (req, res) => {
 };
 
 const postDetail = (req, res) => {
-
-    Post.findById(req.params.id).populate("owner")
-        .then((result1) => {
-            Comment.find({ owner: req.params.id }).populate("user")
-                .sort({ createdAt: -1 })
-                .then((result2) => {
-                    
-                    res.send({ post: result1, comments: result2, err: err });
-                })
-                .catch((err) => {
-                    res.send({ err: err.errors });
-                });
-        })
-        .catch((err) => console.log(err));
-
-
-
+	Post.findById(req.params.id)
+		.populate("owner")
+		.then((post) => {
+			Comment.find({ owner: req.params.id })
+				.sort({ createdAt: -1 })
+				.then((comment) => {
+					res.send({ post, comment });
+				})
+				.catch((err) => {
+					res.send({ err: err.errors });
+				});
+		})
+		.catch((err) => console.log(err));
 };
 
 const postDelete = (req, res) => {
@@ -61,38 +57,35 @@ const postDelete = (req, res) => {
 };
 
 const commentCreate = (req, res) => {
-
-    let commentObj = {
-        ...req.body,
-        owner: req.params.id,
-        
-    };
-console.log(commentObj);
-    const newComment = new Comment(commentObj);
-    newComment.save();
-    Post.findById(req.params.id)
-        .then((result1) => {
-            Comment.find({ owner: req.params.id }).populate('owner')
-                .sort({ createdAt: -1 })
-                .then((result2) => {
-                    const err1 = {};
-					console.log({result1});
-					console.log({result2});
-                    res.send({
-                        post: result1,
-                        comments: result2,
-                        err: err1,
-                    });
-                })
-                .catch((err) => {
-                    res.send({ err: err.errors });
-                });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-	}
-	
+	let commentObj = {
+		...req.body,
+		owner: req.params.id,
+	};
+	const newComment = new Comment(commentObj);
+	newComment.save();
+	Post.findById(req.params.id)
+		.then((result1) => {
+			Comment.find({ owner: req.params.id })
+				.populate("owner")
+				.sort({ createdAt: -1 })
+				.then((result2) => {
+					const err1 = {};
+					console.log({ result1 });
+					console.log({ result2 });
+					res.send({
+						post: result1,
+						comments: result2,
+						err: err1,
+					});
+				})
+				.catch((err) => {
+					res.send({ err: err.errors });
+				});
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+};
 
 const commentDelete = (req, res) => {
 	Comment.findByIdAndDelete(req.params.id)
@@ -226,7 +219,7 @@ const changePassword = async (req, res) => {
 };
 
 const settingsPage = (req, res) => {
-	res.send(" setting page");
+	res.send("setting page");
 };
 
 module.exports = {
