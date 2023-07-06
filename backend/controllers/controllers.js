@@ -18,7 +18,7 @@ const homePage = (req, res) => {
 const postCreate = async (req, res) => {
 	let postObj = {
 		...req.body,
-		// answer: await generateMeta(req.body.question),
+		answer: await generateMeta(req.body.question),
 		owner: req.params.id,
 	};
 	const newPost = new Post(postObj);
