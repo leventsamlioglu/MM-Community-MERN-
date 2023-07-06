@@ -66,7 +66,7 @@ navigate('/')
 			style={{width: '38rem'}}
 		>
 			<img
-				src="https://blog.labelmaster.com/wp-content/uploads/Top-Questions-Blog-Post-567x360.jpg"
+				src="../../questions.jpg"
 				className="card-img-top"
 				alt="blog"
 			/>
