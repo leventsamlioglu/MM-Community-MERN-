@@ -18,7 +18,7 @@ const homePage = (req, res) => {
 const postCreate = async (req, res) => {
 	let postObj = {
 		...req.body,
-		answer: await generateMeta(req.body.question),
+		// answer: await generateMeta(req.body.question),
 		owner: req.params.id,
 	};
 	const newPost = new Post(postObj);
@@ -61,29 +61,34 @@ const commentCreate = (req, res) => {
 		...req.body,
 		owner: req.params.id,
 	};
+
 	const newComment = new Comment(commentObj);
-	newComment.save();
-	Post.findById(req.params.id)
-		.then((result1) => {
-			Comment.find({ owner: req.params.id })
-				.populate("owner")
-				.sort({ createdAt: -1 })
-				.then((result2) => {
-					const err1 = {};
-					console.log({ result1 });
-					console.log({ result2 });
-					res.send({
-						post: result1,
-						comments: result2,
-						err: err1,
-					});
+	newComment
+		.save()
+		.then((res) => {
+			Post.findById(req.params.id)
+				.then((result1) => {
+					Comment.find({ owner: req.params.id })
+						.populate("owner")
+						.sort({ createdAt: -1 })
+						.then((result2) => {
+							const err1 = {};
+							res.send({
+								post: result1,
+								comments: result2,
+								err: err1,
+							});
+						})
+						.catch((err) => {
+							// res.send({ err: err.errors });
+						});
 				})
 				.catch((err) => {
-					res.send({ err: err.errors });
+					console.log(err);
 				});
 		})
-		.catch((err) => {
-			console.log(err);
+		.catch((error) => {
+			res.send(error.errors.comment.properties.message);
 		});
 };
 
