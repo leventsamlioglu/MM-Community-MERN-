@@ -65,30 +65,30 @@ const commentCreate = (req, res) => {
 	const newComment = new Comment(commentObj);
 	newComment
 		.save()
-		.then((res) => {
-			Post.findById(req.params.id)
-				.then((result1) => {
-					Comment.find({ owner: req.params.id })
-						.populate("owner")
-						.sort({ createdAt: -1 })
-						.then((result2) => {
-							const err1 = {};
-							res.send({
-								post: result1,
-								comments: result2,
-								err: err1,
-							});
-						})
-						.catch((err) => {
-							// res.send({ err: err.errors });
-						});
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		})
+		.then((res) => {})
 		.catch((error) => {
 			res.send(error.errors.comment.properties.message);
+		});
+
+	Post.findById(req.params.id)
+		.then((result1) => {
+			Comment.find({ owner: req.params.id })
+				.populate("owner")
+				.sort({ createdAt: -1 })
+				.then((result2) => {
+					const err1 = {};
+					res.send({
+						post: result1,
+						comments: result2,
+						err: err1,
+					});
+				})
+				.catch((err) => {
+					// res.send({ err: err.errors });
+				});
+		})
+		.catch((err) => {
+			console.log(err);
 		});
 };
 
