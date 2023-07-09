@@ -60,6 +60,7 @@ export default function CommentModal({ clickComment, showCom, setShowCom }) {
 								name="comment"
 								rows="5"
 								ref={useRefComment}
+								autoFocus
 							></textarea>
 						</div>
 						{error && (

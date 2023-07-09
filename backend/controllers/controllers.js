@@ -2,7 +2,7 @@ const Post = require("../models/postModel");
 const User = require("../models/userModel");
 const Comment = require("../models/commentModel");
 const jwt = require("jsonwebtoken");
-const { generateMeta } = require("./openaiController");
+// const { generateMeta } = require("./openaiController");
 const bcrypt = require("bcrypt");
 
 const homePage = (req, res) => {
@@ -71,16 +71,16 @@ const commentCreate = (req, res) => {
 		});
 
 	Post.findById(req.params.id)
-		.then((result1) => {
+		.then((post) => {
 			Comment.find({ owner: req.params.id })
 				.populate("owner")
 				.sort({ createdAt: -1 })
-				.then((result2) => {
-					const err1 = {};
+				.then((comments) => {
+					const err = {};
 					res.send({
-						post: result1,
-						comments: result2,
-						err: err1,
+						post,
+						comments,
+						err
 					});
 				})
 				.catch((err) => {
